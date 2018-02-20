@@ -11,12 +11,18 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Random;
 
 import static android.Manifest.permission.RECORD_AUDIO;
@@ -112,6 +118,25 @@ public class MainActivity extends AppCompatActivity {
 
                 mediaPlayer = new MediaPlayer();
 
+                System.out.println("Audio aqui "+AudioSavePathInDevice);
+
+                File file = new File(AudioSavePathInDevice);
+                System.out.println("arquivo?" + file.getTotalSpace() + file.getAbsolutePath());
+                byte[] bytes;
+                try {
+                    bytes = FileUtils.readFileToByteArray(file);
+                    String encoded = Base64.encodeToString(bytes, 0);
+                    Log.i("~~~~~~~~ Encoded: ", encoded);
+                    System.out.print(encoded);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                //byte[] decoded = Base64.decode(encoded, 0);
+                //Log.i("~~~~~~~~ decoded: ", decoded.toString());
+
+
                 try {
                     mediaPlayer.setDataSource(AudioSavePathInDevice);
                     mediaPlayer.prepare();
@@ -185,13 +210,14 @@ public class MainActivity extends AppCompatActivity {
     /*****************************************/
     //Parando a gravação do audio
     /*****************************************/
-    public void parar(){
+    public void parar() {
 
         mediaRecorder.stop();
         buttonStop.setEnabled(false);
         buttonPlayLastRecordAudio.setEnabled(true);
         buttonStart.setEnabled(true);
         buttonStopPlayingRecording.setEnabled(false);
+
         Toast.makeText(MainActivity.this, "Gravação finalizada", Toast.LENGTH_LONG).show();
 
     }
@@ -205,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
         mediaRecorder=new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+        mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.THREE_GPP);
         mediaRecorder.setOutputFile(AudioSavePathInDevice);
 
     }
