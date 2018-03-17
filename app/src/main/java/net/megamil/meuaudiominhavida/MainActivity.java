@@ -12,7 +12,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -22,7 +21,6 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Random;
 
 import static android.Manifest.permission.RECORD_AUDIO;
@@ -54,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
 
         random = new Random();
 
-        /*****************************************/
-        //Iniciar gravação
-        /*****************************************/
+        /**
+        * Iniciar gravação
+        */
         buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,9 +91,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*****************************************/
-        //Parar manualmente
-        /*****************************************/
+        /**
+         * Parar manualmente
+         */
         buttonStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,9 +101,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*****************************************/
-        //Tocar audio recem gravado
-        /*****************************************/
+        /**
+         * Tocar audio recem gravado
+         */
         buttonPlayLastRecordAudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) throws IllegalArgumentException, SecurityException, IllegalStateException {
@@ -126,16 +124,15 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     bytes = FileUtils.readFileToByteArray(file);
                     String encoded = Base64.encodeToString(bytes, 0);
-                    Log.i("~~~~~~~~ Encoded: ", encoded);
+                    System.out.println("Inicio base64");
                     System.out.print(encoded);
+                    System.out.println("Fim base64");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
-
                 //byte[] decoded = Base64.decode(encoded, 0);
                 //Log.i("~~~~~~~~ decoded: ", decoded.toString());
-
 
                 try {
                     mediaPlayer.setDataSource(AudioSavePathInDevice);
@@ -148,9 +145,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*****************************************/
-        //Parar a reprodução
-        /*****************************************/
+        /**
+         * Parar a reprodução
+         */
         buttonStopPlayingRecording.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -175,9 +172,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /*****************************************/
-    //Decrementar progressBar
-    /*****************************************/
+    /**
+     * Decrementar progressBar
+     */
     public void decrementarBarra(){
         final ProgressBar mProgressBar;
         CountDownTimer mCountDownTimer;
@@ -207,9 +204,9 @@ public class MainActivity extends AppCompatActivity {
         mCountDownTimer.start();
     }
 
-    /*****************************************/
-    //Parando a gravação do audio
-    /*****************************************/
+    /**
+     * Parando a gravação do audio
+     */
     public void parar() {
 
         mediaRecorder.stop();
@@ -222,9 +219,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /*****************************************/
-    //Preparando gravação e armazenamento
-    /*****************************************/
+    /**
+     * Preparando gravação e armazenamento
+     */
     public void MediaRecorderReady(){
 
         System.out.println("Preparando Gravação");
@@ -251,9 +248,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /*****************************************/
-    //Solicitando permissão para Leitura/Gravação e Gravação/Tocar Audio
-    /*****************************************/
+    /**
+     * Solicitando permissão para Leitura/Gravação e Gravação/Tocar Audio
+     */
     private void requestPermission() {
         System.out.println("Solicitando permissões");
         ActivityCompat.requestPermissions(MainActivity.this, new String[]{WRITE_EXTERNAL_STORAGE, RECORD_AUDIO}, RequestPermissionCode);
